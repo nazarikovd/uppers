@@ -259,6 +259,10 @@ class ktsApi
 		}
 		$a = $this->get("https://api.vk.com/method/apps.get?access_token=" . $access_token . "&v=5.131&app_id=" . $this->app_id);
 		$b = json_decode($a);
+		if(empty($b->response->items[0]->webview_url)){
+			
+			$this->error("e", "Can't auth with this token");
+		}
 		$b = $b
 			->response
 			->items[0]->webview_url;
@@ -270,6 +274,10 @@ class ktsApi
 		);
 		$a = $this->get($this->api_url . "/user/auth?" . $VKSign, $headers);
 		$b = json_decode($a);
+		if(empty($b->data->token)){
+			
+			$this->error("e", "Auth error! ".$a);
+		}
 		$b = $b
 			->data->token;
 		return $b;
